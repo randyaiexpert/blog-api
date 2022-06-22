@@ -6,6 +6,7 @@ from blog_category.models import Category
 
 from extensions.upload_file_path import upload_file_path
 
+from .managers import BlogManager
 
 
 # Create your models here.
@@ -21,7 +22,8 @@ class Blog(models.Model):
     author = models.ForeignKey(
         User,
         default=None,
-        null=True,
+        null=False,
+        blank=False,
         on_delete=models.CASCADE,
         related_name='blogs',
     )
@@ -38,7 +40,7 @@ class Blog(models.Model):
     publish = models.DateTimeField(default=timezone.now)
     create = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    is_special = models.BooleanField(default=False)
+    special = models.BooleanField(default=False)
     status = models.CharField(max_length=1,choices=STATUS_CHOICES)
 
 
@@ -50,3 +52,6 @@ class Blog(models.Model):
         ordering = ['-publish','-updated']
         verbose_name = "blog"
         verbose_name_plural = "blogs"
+
+
+    objects = BlogManager()
